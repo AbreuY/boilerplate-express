@@ -1,3 +1,4 @@
+require("dotenv").config();
 var express = require('express');
 var app = express();
 
@@ -17,9 +18,17 @@ res.sendFile(absolutePath);
 
 //Serving json data
 app.get('/json', (req, res)=>{
+  if(process.env.MESSAGE_STYLE == uppercase){
+    res.json({
+      "message":"HELLO JSON"
+    });
+
+    return;
+  }
   res.json({
     "message":"Hello json"
   });
+  return;
 });
 
 
