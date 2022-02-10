@@ -1,4 +1,5 @@
 require("dotenv").config();
+var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 
@@ -10,11 +11,12 @@ let pathStatic = __dirname + "/public";
 // Serve static content for the app from the 
 // “public” directory in the application directory:
 app.use('/public', express.static(__dirname + '/public'));
-
 app.use((req, res, next) => {
   console.log(req.method + " " + req.path + " - " + req.ip);
   next();
 });
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   //res.send("Hello Express");
@@ -43,22 +45,21 @@ app.get("/now", (req, res, next) => {
   res.json({ "time": req.time });
 });
 
-app.get('/:word/echo', (req, res)=>{
+app.get('/:word/echo', (req, res) => {
   res.json({
     "echo": req.params.word
   });
 });
 
-app.get('/name', (req, res)=>{
-  console.log(req.query);
-  let {first, last} = req.query;
+app.get('/name', (req, res) => {
+  let { first, last } = req.query;
   res.json({
-    "name":first + " " + last 
+    "name": first + " " + last
   });
-}).post('/name', (req, res)=>{
-    let {first, last} = req.query;
+}).post('/name', (req, res) => {
+  let {first, last} = req.body;
   res.json({
-    "name":first + " " + last
+    "name": first + " " + last
   });
 });
 
